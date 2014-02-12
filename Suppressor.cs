@@ -13,7 +13,7 @@ using Microsoft.Web.Editor;
 namespace SLaks.RefSyncKiller {
     class Suppressor : IDisposable {
         // Copied from Microsoft.VisualStudio.JavaScript.Web.Extensions.ReferenceAutoSync.ProjectServices
-        //assemblyref://Microsoft.Web.Editor
+
         [Import]
         private IWebProjectServices _webProjectServices;
 
@@ -36,13 +36,14 @@ namespace SLaks.RefSyncKiller {
         private void OnWebProjectOpened(object sender, ProjectEventArgs e) {
             this.InitializeProject(e.Project);
         }
-        //private void OnWebProjectClosing(object sender, ProjectEventArgs e) {
-        //    this.DisposeProject(e.Project);
-        //}
         private void InitializeProject(IVsHierarchy webProject) {
             WebProjectData projectData = this._webProjectServices.GetProjectData(webProject);
             projectData.Properties.AddProperty(ReferenceSyncManager, FormatterServices.GetSafeUninitializedObject(ReferenceSyncManager));
         }
+        // We don't need to dispose our fake objects
+        //private void OnWebProjectClosing(object sender, ProjectEventArgs e) {
+        //    this.DisposeProject(e.Project);
+        //}
         //private void DisposeProject(IVsHierarchy webProject) {
         //    WebProjectData projectData = this._webProjectServices.GetProjectData(webProject);
         //    ReferenceSyncManager property = projectData.Properties.GetProperty<ReferenceSyncManager>(typeof(Microsoft.VisualStudio.JavaScript.Web.Extensions.ReferenceAutoSync.ReferenceSyncManager));
