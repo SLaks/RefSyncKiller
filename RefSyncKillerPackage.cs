@@ -8,6 +8,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.Web.Editor;
 
 namespace SLaks.RefSyncKiller {
     /// <summary>
@@ -48,7 +49,7 @@ namespace SLaks.RefSyncKiller {
         protected override void Initialize() {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
-            new Suppressor().ToString();        // ctor adds event handlers
+            WebEditor.ExportProvider.GetExport<Suppressor>();        // ctor adds event handlers
         }
 
     }

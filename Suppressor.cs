@@ -1,29 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.JavaScript.Web.Extensions;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Web.Editor;
-using Microsoft.Web.Editor;
 
 namespace SLaks.RefSyncKiller {
+    [Export]
     class Suppressor : IDisposable {
         // Copied from Microsoft.VisualStudio.JavaScript.Web.Extensions.ReferenceAutoSync.ProjectServices
 
-        [Import]
-        private IWebProjectServices _webProjectServices;
+        private readonly IWebProjectServices _webProjectServices;
 
         private static readonly Type ReferenceSyncManager = typeof(JavaScriptWebExtensionsPackage).Assembly.GetType("Microsoft.VisualStudio.JavaScript.Web.Extensions.ReferenceAutoSync.ReferenceSyncManager");
 
-        internal Suppressor() {
+        [ImportingConstructor]
+        public Suppressor(IWebProjectServices webProjectServices) {
             if (ReferenceSyncManager == null)
                 return;
-
-            WebEditor.CompositionService.SatisfyImportsOnce(this);
+            this._webProjectServices = webProjectServices;
             this.Initialize();
         }
         private void Initialize() {
